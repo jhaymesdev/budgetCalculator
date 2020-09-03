@@ -8,7 +8,13 @@ class TransactionList extends StatelessWidget {
   TransactionList(this.userTransaction);
   @override
   Widget build(BuildContext context) {
-    return Container(
+    return userTransaction.isEmpty? Column(
+      children: [
+        Text("Omo you no buy anything since?",style: TextStyle(fontSize: 20,fontWeight: FontWeight.bold),textAlign: TextAlign.center,),
+        SizedBox(height: 15,),
+        Image.asset("assets/images/waiting.png",fit: BoxFit.fill,)
+      ],
+    ):Container(
       height: 400,
       child: ListView.builder(
        itemBuilder: (context, index){
