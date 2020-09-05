@@ -42,8 +42,10 @@ class _HomeState extends State<Home> {
   ];
   //It was recent transaction not all transactions
   List<Transaction> get recentTransaction {
-    return userTransaction.where((element) =>
-        element.date.isAfter(DateTime.now().subtract(Duration(days: 7)))).toList();
+    return userTransaction
+        .where((element) =>
+            element.date.isAfter(DateTime.now().subtract(Duration(days: 7))))
+        .toList();
     //try using a forLoop here I am exhausted frfr
   }
 
@@ -57,6 +59,7 @@ class _HomeState extends State<Home> {
       userTransaction.add(newtx);
     });
   }
+
   void startAddNewTrans(BuildContext cntxt) {
     showModalBottomSheet(
         context: cntxt,
