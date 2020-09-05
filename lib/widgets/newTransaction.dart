@@ -1,3 +1,5 @@
+import 'dart:ffi';
+
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 
@@ -15,7 +17,7 @@ class _NewTransactionState extends State<NewTransaction> {
 
   final amountController = TextEditingController();
   DateTime _selectedDate;
-  void submitDate() {
+  void submitData() {
     final controlledTitle = titleController.text;
     final controlledAmount = double.parse(amountController.text);
     if (controlledTitle.isEmpty || controlledAmount < 0 || _selectedDate == null) {
@@ -30,21 +32,7 @@ class _NewTransactionState extends State<NewTransaction> {
 
 
   //commit name is show date picker
-  void datePicker() {
-    showDatePicker(
-      context: context,
-      initialDate: DateTime.now(),
-      firstDate: DateTime(2019),
-      lastDate: DateTime.now(),
-    ).then((value) {
-      if (value == null) {
-        return;
-      }
-      setState(() {
-        _selectedDate == value;
-      });
-    });
-  }
+
 
   @override
   Widget build(BuildContext context) {
@@ -56,13 +44,13 @@ class _NewTransactionState extends State<NewTransaction> {
             decoration: InputDecoration(labelText: "Title of expense"),
             controller: titleController,
             scrollController: ScrollController(keepScrollOffset: false),
-            onSubmitted: (_) => submitDate(),
+            onSubmitted: (_) => submitData(),
           ),
           TextField(
             decoration: InputDecoration(labelText: "amount"),
             controller: amountController,
             keyboardType: TextInputType.number,
-            onSubmitted: (_) => submitDate(),
+            onSubmitted: (_) => submitData(),
           ),
           Row(
             children: [
@@ -73,17 +61,21 @@ class _NewTransactionState extends State<NewTransaction> {
                       :"${ DateFormat.yMd().format(_selectedDate)}",
                 ),
               ),
-              FlatButton.icon(
-                  onPressed: datePicker,
-                  icon: Icon(Icons.calendar_today),
-                  label: Text(
-                   "Choose Date",
-                    style: TextStyle(
-                        color: Colors.lightBlue, fontWeight: FontWeight.bold),
-                  ))
+              FlatButton(
+                 onPressed: (){
+                     showDatePicker(context: context, initialDate: DateTime.now(), firstDate:DateTime(2000), lastDate: DateTime.now()).then((value){
+                       setState(() {
+                         _selectedDate = value;
+                       });
+                     });
+
+                 },
+                child: Text(_selectedDate==null?"Choose Date":"change date"),
+                  ),
+
             ],
           ),
-          FlatButton(onPressed: submitDate, child: Text("Add transaction"))
+          FlatButton(onPressed: submitData, child: Text("Add transaction"))
         ],
       ),
     );
